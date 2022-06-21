@@ -2,9 +2,7 @@ version: '3.7'
 
 services:
   postgres:
-    build:
-      context: services/postgres/
-      dockerfile: Dockerfile
+    image: postgres
     container_name: postgres.db
     restart: always
     environment:
@@ -15,19 +13,19 @@ services:
       - "${DB_PORT}:5432"
     volumes:
       - db:/var/lib/postgresql/data
-      - ./services/postgres:/docker-entrypoint-initdb.d
+      - ./:/docker-entrypoint-initdb.d
     networks:
       - internal
 
   app:
     container_name: shop.backend
     build:
-      context: ../../app/
+      context: app
     ports:
-      - 8000:8000
-      - 8080:8080
+      - "8000:8000"
+      - "${BACKEND_PORT}:8080"
     volumes:
-      - ../../app:/usr/src/app
+      - ./app:/usr/src/app
     command: ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
     networks:
       - internal
@@ -37,19 +35,34 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:${HOST}:${DB_PORT}/${DB_NAME}
       - SPRING_DATASOURCE_USERNAME={DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - SERVER_PORT=8080
+      - SERVER_PORT=${BACKEND_PORT}
 
   web:
     container_name: shop.frontend
     command: yarn start
     build:
-      context: ../../web/
+      context: ./web/
     depends_on:
       - app
     volumes:
-      - ../../web/src:/usr/src/app/src
+      - ./web/src:/usr/src/app/src
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:3000"
+    networks:
+      - internal
+
+  nginx:
+    container_name: shop.nginx
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - web
+      - app
+    networks:
+      - internal
 
 volumes:
   db:
