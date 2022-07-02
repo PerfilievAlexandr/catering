@@ -32,8 +32,8 @@ services:
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:${HOST}:${DB_PORT}/${DB_NAME}
-      - SPRING_DATASOURCE_USERNAME={DB_USER}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:${DB_PORT}/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SERVER_PORT=${BACKEND_PORT}
 
