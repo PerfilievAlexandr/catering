@@ -3,6 +3,7 @@ package com.example.app.security.model;
 import com.example.app.security.model.entity.User;
 import com.example.app.security.model.enums.EUserStatus;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,15 +12,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class SecurityUser implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
+    @Getter
     private final Integer id;
-    private final Set<? extends GrantedAuthority> grantedAuthorities;
-    private final String password;
     private final String username;
+    private final String password;
     private final boolean isAccountNonExpired;
     private final boolean isAccountNonLocked;
     private final boolean isCredentialsNonExpired;
     private final boolean isEnabled;
+    private final Set<? extends GrantedAuthority> grantedAuthorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,7 +59,8 @@ public class SecurityUser implements UserDetails {
     }
 
     public static UserDetails constructFromUserDbToUserDetails(User user) {
-        return new org.springframework.security.core.userdetails.User(
+        return new UserDetailsImpl(
+                user.getId(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getStatus().equals(EUserStatus.ACTIVE),

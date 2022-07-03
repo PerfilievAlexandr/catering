@@ -6,13 +6,11 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class JwtUtils {
@@ -24,9 +22,19 @@ public class JwtUtils {
     public String generateJwtToken(Authentication authentication) {
         return Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("authorities", authentication.getAuthorities())
+                .claim(jwtConfig.getAuthorities(), authentication.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays())))
+                .setExpiration(new Date((new Date()).getTime() + jwtConfig.getJwtExpirationMs()))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String generateTokenFromUserDetails(UserDetails userDetails) {
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .claim(jwtConfig.getAuthorities(), userDetails.getAuthorities())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtConfig.getJwtExpirationMs()))
                 .signWith(secretKey)
                 .compact();
     }
@@ -40,7 +48,7 @@ public class JwtUtils {
     public List<Map<String, String>> getAuthorities(String token) {
         Claims claims = getClaims(token);
 
-        return (List<Map<String, String>>) claims.get("authorities");
+        return (List<Map<String, String>>) claims.get(jwtConfig.getAuthorities());
     }
 
     private Claims getClaims(String token) throws JwtException {

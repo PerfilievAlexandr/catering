@@ -10,8 +10,6 @@ import java.util.List;
 @Data
 public class SignupRequest {
     @NotNull
-    private String userName;
-    @NotNull
     private String email;
     @NotNull
     private String firstName;

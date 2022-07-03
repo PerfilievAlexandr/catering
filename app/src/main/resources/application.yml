@@ -2,7 +2,9 @@ application:
   jwt:
     secret: secure-secure-secure-secure-secure-secure-secure-secure-secure-secure
     tokenPrefix: Bearer
-    tokenExpirationAfterDays: 1
+    jwtExpirationMs: 3600000
+    jwtRefreshExpirationMs: 86400000
+    authorities: authorities
 spring:
   jpa:
     database: postgresql

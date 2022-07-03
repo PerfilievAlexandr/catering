@@ -16,7 +16,9 @@ public class JwtConfig {
 
     private String secret;
     private String tokenPrefix;
-    private int tokenExpirationAfterDays;
+    private int jwtExpirationMs;
+    private int jwtRefreshExpirationMs;
+    private String authorities;
 
     public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;

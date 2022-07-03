@@ -1,6 +1,6 @@
 package com.example.app.security.service;
 
-import com.example.app.security.model.SecurityUser;
+import com.example.app.security.model.UserDetailsImpl;
 import com.example.app.security.model.entity.User;
 import com.example.app.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,6 @@ public class SecurityUserService implements UserDetailsService {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: %s not found", email)));
 
-        return SecurityUser.constructFromUserDbToUserDetails(user);
+        return UserDetailsImpl.constructFromUserDbToUserDetails(user);
     }
 }
