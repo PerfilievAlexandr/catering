@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class SecurityUserService implements UserDetailsService {
+public class SecurityUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 

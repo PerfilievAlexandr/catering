@@ -1,15 +1,17 @@
 package com.example.app.security.service;
 
-import com.example.app.security.exception.RefreshTokenException;
+import com.example.app.exception.RefreshTokenException;
 import com.example.app.security.jwt.JwtConfig;
+import com.example.app.security.jwt.JwtUtils;
+import com.example.app.security.model.UserDetailsImpl;
 import com.example.app.security.model.entity.RefreshToken;
 import com.example.app.security.repository.RefreshTokenRepository;
 import com.example.app.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,9 +22,19 @@ public class RefreshTokenService {
     private UserRepository userRepository;
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    private JwtUtils jwtUtils;
 
-    public Optional<RefreshToken> findByToken(String token) {
-        return refreshTokenRepository.findByToken(token);
+    public String getRefreshedToken(String refreshToken) throws RefreshTokenException {
+        RefreshToken refreshTokenFromDb = findByToken(refreshToken);
+        verifyExpiration(refreshTokenFromDb);
+        UserDetails userDetails = UserDetailsImpl.constructFromUserDbToUserDetails(refreshTokenFromDb.getUser());
+        return jwtUtils.generateTokenFromUserDetails(userDetails);
+    }
+
+    public RefreshToken findByToken(String token) throws RefreshTokenException {
+        return refreshTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RefreshTokenException(token, "Refresh token is not in database!"));
     }
 
     public RefreshToken createRefreshToken(Integer userId) {
@@ -34,7 +46,7 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
-    public RefreshToken verifyExpiration(RefreshToken token) {
+    public RefreshToken verifyExpiration(RefreshToken token) throws RefreshTokenException {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new RefreshTokenException(token.getToken(), "Refresh token was expired. Please make a new signin request");

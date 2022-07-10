@@ -3,7 +3,7 @@ package com.example.app.security.config;
 import com.example.app.security.jwt.AuthEntryPointJwt;
 import com.example.app.security.jwt.JwtConfig;
 import com.example.app.security.jwt.JwtTokenVerifier;
-import com.example.app.security.service.SecurityUserService;
+import com.example.app.security.service.SecurityUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private SecurityUserService applicationUserService;
+    private SecurityUserDetailsService applicationSecurityUserDetailsService;
     @Autowired
     private JwtConfig jwtConfig;
     @Autowired
@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(applicationUserService);
+        provider.setUserDetailsService(applicationSecurityUserDetailsService);
 
         return provider;
     }
