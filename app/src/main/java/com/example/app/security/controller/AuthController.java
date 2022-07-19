@@ -31,7 +31,7 @@ public class AuthController {
     private UserService userService;
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority(T(com.example.app.security.model.enums.ESecurityUserPermissions).ADMIN_READ)")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
@@ -49,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    @PreAuthorize("hasAuthority('admin:write')")
+    @PreAuthorize("hasAuthority(T(com.example.app.security.model.enums.ESecurityUserPermissions).ADMIN_WRITE)")
     public void registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         userService.registerUser(signupRequest);
     }
@@ -62,7 +62,7 @@ public class AuthController {
     }
 
     @DeleteMapping("/{userId}")
-    @PreAuthorize("hasAuthority('admin:write')")
+    @PreAuthorize("hasAuthority(T(com.example.app.security.model.enums.ESecurityUserPermissions).ADMIN_WRITE)")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("userId") Integer userId) {
         userRepository.deleteById(userId);
 
