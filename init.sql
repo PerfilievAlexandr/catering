@@ -65,3 +65,59 @@ CREATE TABLE refresh_tokens
     user_id INTEGER,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+CREATE TABLE customers
+(
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL
+);
+
+INSERT INTO customers (
+    email,
+    first_name,
+    middle_name,
+    last_name,
+    phone
+)
+VALUES (
+           'test2@mail.ru',
+           'Ann',
+           'Brown',
+           'Smith',
+            '+79062347283'
+       );
+
+CREATE TABLE orders
+(
+    id SERIAL PRIMARY KEY,
+    order_number VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    customer_id INTEGER NOT NULL,
+    CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)
+);
+
+INSERT INTO orders (
+    order_number,
+    status,
+    customer_id
+)
+VALUES (
+           '1',
+           'READY',
+           1
+       );
+
+INSERT INTO orders (
+    order_number,
+    status,
+    customer_id
+)
+VALUES (
+           '2',
+           'NOT_READY',
+           1
+       );

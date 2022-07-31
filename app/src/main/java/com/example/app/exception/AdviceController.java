@@ -1,4 +1,4 @@
-package com.example.app.utils;
+package com.example.app.exception;
 
 import com.example.app.exception.ServiceException;
 import com.example.app.exception.errors.ApiError;
