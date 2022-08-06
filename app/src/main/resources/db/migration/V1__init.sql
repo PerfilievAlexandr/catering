@@ -9,19 +9,19 @@ CREATE TABLE users
 );
 
 INSERT INTO users (
-                  email,
-                  first_name,
-                  last_name,
-                  password,
-                  status
-                  )
-    VALUES (
-            'test1@mail.ru',
-            'Tom',
-            'Brown',
-            '$2a$10$ySW0fA0S7B0KjcIw5RFrGej5/T12LrZFinV05enPD1rXcXxH6jNje',
-            'ACTIVE'
-            );
+    email,
+    first_name,
+    last_name,
+    password,
+    status
+)
+VALUES (
+           'test1@mail.ru',
+           'Tom',
+           'Brown',
+           '$2a$10$ySW0fA0S7B0KjcIw5RFrGej5/T12LrZFinV05enPD1rXcXxH6jNje',
+           'ACTIVE'
+       );
 
 INSERT INTO users (
     email,
@@ -44,8 +44,14 @@ CREATE TABLE roles
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
-INSERT INTO roles (name) VALUES ('USER');
 INSERT INTO roles (name) VALUES ('ADMIN');
+INSERT INTO roles (name) VALUES ('DIRECTOR');
+INSERT INTO roles (name) VALUES ('MANAGER');
+INSERT INTO roles (name) VALUES ('SALES');
+INSERT INTO roles (name) VALUES ('CONDUCTING');
+INSERT INTO roles (name) VALUES ('PRODUCTION');
+INSERT INTO roles (name) VALUES ('STORAGE');
+INSERT INTO roles (name) VALUES ('MARKETING');
 
 CREATE TABLE user_roles
 (
@@ -88,7 +94,7 @@ VALUES (
            'Ann',
            'Brown',
            'Smith',
-            '+79062347283'
+           '+79062347283'
        );
 
 CREATE TABLE orders

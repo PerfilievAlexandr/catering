@@ -13,12 +13,11 @@ services:
       - "${DB_PORT}:5432"
     volumes:
       - db:/var/lib/postgresql/data
-      - ./:/docker-entrypoint-initdb.d
     networks:
       - internal
 
   app:
-    container_name: shop.backend
+    container_name: catering.backend
     build:
       context: app
     ports:
@@ -38,7 +37,7 @@ services:
       - SERVER_PORT=${BACKEND_PORT}
 
   web:
-    container_name: shop.frontend
+    container_name: catering.frontend
     command: yarn start
     build:
       context: ./web/
