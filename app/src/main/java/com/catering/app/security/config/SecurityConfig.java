@@ -22,6 +22,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String[] AUTH_WHITELIST = {
+            "/",
+            "index,",
+            "/css/*",
+            "/js/*",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/swagger-resources/**",
+            "/api/v1/auth/signin",
+            "/api/v1/auth/refresh-token",
+            "/api/v1/customers",
+    };
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -40,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                .antMatchers("/", "index,", "/css/*", "/js/*", "/api/v1/auth/signin", "/api/v1/auth/refresh-token", "/api/v1/customers").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtTokenVerifier(), UsernamePasswordAuthenticationFilter.class);
