@@ -11,19 +11,13 @@ import java.util.List;
 @Table(name = "customers")
 @Data
 @NoArgsConstructor
-public class Customer {
+public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "middle_name")
-    private String middleName;
 
     @Column(name = "last_Name")
     private String lastName;
@@ -31,7 +25,13 @@ public class Customer {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "company_name")
+    private String companyName;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders;
+    private List<OrderEntity> orderEntities;
 }

@@ -1,9 +1,9 @@
 package com.catering.app.servise;
 
-import com.catering.app.repository.entity.Customer;
+import com.catering.app.domain.models.customer.Customer;
 
 import java.util.List;
 
 public interface CustomerService {
-    public List<Customer> getAll();
+    List<Customer> getAll();
 }

@@ -1,6 +1,6 @@
 package com.catering.app.controller;
 
-import com.catering.app.repository.entity.Customer;
+import com.catering.app.domain.models.customer.Customer;
 import com.catering.app.servise.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

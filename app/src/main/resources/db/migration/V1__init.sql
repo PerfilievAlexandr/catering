@@ -77,22 +77,20 @@ CREATE TABLE customers
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     first_name VARCHAR(255) NOT NULL,
-    middle_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    phone VARCHAR(255) NOT NULL
+    phone VARCHAR(255) UNIQUE NOT NULL,
+    company_name VARCHAR(255)
 );
 
 INSERT INTO customers (
     email,
     first_name,
-    middle_name,
     last_name,
     phone
 )
 VALUES (
            'test2@mail.ru',
            'Ann',
-           'Brown',
            'Smith',
            '+79062347283'
        );
@@ -100,30 +98,46 @@ VALUES (
 CREATE TABLE orders
 (
     id SERIAL PRIMARY KEY,
-    order_number VARCHAR(255) NOT NULL,
+    number VARCHAR(255) NOT NULL,
     status VARCHAR(255) NOT NULL,
+    event_date VARCHAR(10) NOT NULL,
+    event_reason VARCHAR(255) NOT NULL,
+    persons_quantity INTEGER NOT NULL,
+    event_type VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    comment VARCHAR(500),
     customer_id INTEGER NOT NULL,
     CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)
 );
 
 INSERT INTO orders (
-    order_number,
+    number,
     status,
+    event_date,
+    event_reason,
+    persons_quantity,
+    event_type,
+    address,
+    comment,
     customer_id
 )
 VALUES (
            '1',
-           'READY',
-           1
+           'DRAFT',
+            '08.08.2021',
+           'COMPANY_PARTY',
+            35,
+            'BANQUET',
+            'д. Новорочье, дом 5',
+            'площадка за озером',
+            1
        );
 
-INSERT INTO orders (
-    order_number,
-    status,
-    customer_id
-)
-VALUES (
-           '2',
-           'NOT_READY',
-           1
-       );
+CREATE TABLE menu_items
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    weight_output INTEGER NOT NULL,
+    coast INTEGER NOT NULL
+);
+
