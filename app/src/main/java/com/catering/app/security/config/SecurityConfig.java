@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/api/v1/auth/signin",
             "/api/v1/auth/refresh-token",
-            "/api/v1/customers",
+            "/api/v1/customers/*",
     };
     @Autowired
     private PasswordEncoder passwordEncoder;

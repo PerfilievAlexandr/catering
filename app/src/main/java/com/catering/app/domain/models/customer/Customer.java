@@ -16,5 +16,5 @@ public class Customer {
     private String phone;
     private String email;
     private String company_name;
-    private List<OrderOfCustomer> orderEntities;
+    private List<OrderOfCustomer> orders;
 }
