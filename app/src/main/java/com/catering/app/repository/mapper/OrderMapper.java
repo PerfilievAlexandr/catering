@@ -1,13 +1,12 @@
 package com.catering.app.repository.mapper;
 
-import com.catering.app.domain.models.order.CustomerOfOrder;
-import com.catering.app.domain.models.order.Order;
+import com.catering.app.domain.models.Order;
 import com.catering.app.repository.entity.CustomerEntity;
 import com.catering.app.repository.entity.OrderEntity;
 
 public class OrderMapper {
     public static Order mapToDomainOrder(OrderEntity orderEntity) {
-        CustomerOfOrder customerOfOrder = OrderMapper.mapToCustomerOfOrder(orderEntity.getCustomer());
+        Order.Customer customerOfOrder = OrderMapper.mapToCustomerOfOrder(orderEntity.getCustomer());
 
         return new Order(
                 orderEntity.getId(),
@@ -23,8 +22,8 @@ public class OrderMapper {
         );
     }
 
-    private static CustomerOfOrder mapToCustomerOfOrder(CustomerEntity customerEntity) {
-        return new CustomerOfOrder(
+    private static Order.Customer mapToCustomerOfOrder(CustomerEntity customerEntity) {
+        return new Order.Customer(
                 customerEntity.getId(),
                 customerEntity.getFirstName(),
                 customerEntity.getLastName(),

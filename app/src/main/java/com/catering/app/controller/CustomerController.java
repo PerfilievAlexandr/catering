@@ -1,6 +1,7 @@
 package com.catering.app.controller;
 
-import com.catering.app.domain.models.customer.Customer;
+import com.catering.app.controller.dto.response.CustomerDto;
+import com.catering.app.controller.mapper.CustomerDtoMapper;
 import com.catering.app.exception.ServiceException;
 import com.catering.app.servise.CustomerService;
 import io.swagger.annotations.ApiOperation;
@@ -19,21 +20,24 @@ public class CustomerController {
 
     @GetMapping()
     @ApiOperation(value = "Получить список заказчиков")
-    @ApiResponse(code = 200, message = "", response = Customer.class)
-    public List<Customer> getAllCustomers() {
-        return customerService.getAll();
+    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
+    public List<CustomerDto> getAllCustomers() {
+        return customerService.getAll()
+                .stream()
+                .map(CustomerDtoMapper::mapToCustomerDto)
+                .toList();
     }
 
     @GetMapping("/{customerId}")
     @ApiOperation(value = "Получить заказчика по id")
-    @ApiResponse(code = 200, message = "", response = Customer.class)
-    public Customer getCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
-        return customerService.getCustomerById(customerId);
+    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
+    public CustomerDto getCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
+        return CustomerDtoMapper.mapToCustomerDto(customerService.getCustomerById(customerId));
     }
 
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Удалить заказчика по id")
-    @ApiResponse(code = 200, message = "", response = Customer.class)
+    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
     public void deleteCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
         customerService.deleteCustomerById(customerId);
     }

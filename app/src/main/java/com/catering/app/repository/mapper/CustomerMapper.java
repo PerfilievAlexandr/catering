@@ -1,7 +1,6 @@
 package com.catering.app.repository.mapper;
 
-import com.catering.app.domain.models.customer.Customer;
-import com.catering.app.domain.models.customer.OrderOfCustomer;
+import com.catering.app.domain.models.Customer;
 import com.catering.app.repository.entity.CustomerEntity;
 import com.catering.app.repository.entity.OrderEntity;
 
@@ -12,7 +11,7 @@ import java.util.Optional;
 public class CustomerMapper {
     public static Customer mapToCustomerDomain(CustomerEntity customerEntity) {
         Optional<List<OrderEntity>> optionalOrders = Optional.ofNullable(customerEntity.getOrderEntities());
-        List<OrderOfCustomer> orderList = optionalOrders
+        List<Customer.Order> orderList = optionalOrders
                 .orElse(Collections.emptyList())
                 .stream()
                 .map(CustomerMapper::mapToOrderOfCustomer)
@@ -29,8 +28,8 @@ public class CustomerMapper {
         );
     }
 
-    private static OrderOfCustomer mapToOrderOfCustomer(OrderEntity orderEntity) {
-        return new OrderOfCustomer(
+    private static Customer.Order mapToOrderOfCustomer(OrderEntity orderEntity) {
+        return new Customer.Order(
                 orderEntity.getId(),
                 orderEntity.getNumber(),
                 orderEntity.getStatus(),

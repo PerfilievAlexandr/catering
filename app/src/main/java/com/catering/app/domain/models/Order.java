@@ -1,4 +1,4 @@
-package com.catering.app.domain.models.order;
+package com.catering.app.domain.models;
 
 import com.catering.app.domain.enums.EventReason;
 import com.catering.app.domain.enums.EventType;
@@ -20,5 +20,17 @@ public class Order {
     private EventType eventType;
     private String address;
     private String comment;
-    private CustomerOfOrder customerOfOrder;
+    private Order.Customer customer;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Customer {
+        private int id;
+        private String firstName;
+        private String lastName;
+        private String phone;
+        private String email;
+        private String companyName;
+    }
 }

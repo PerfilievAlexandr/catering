@@ -1,6 +1,6 @@
 package com.catering.app.repository;
 
-import com.catering.app.domain.models.customer.Customer;
+import com.catering.app.domain.models.Customer;
 import com.catering.app.exception.ServiceException;
 import com.catering.app.exception.errors.ApiErrorType;
 import com.catering.app.repository.entity.CustomerEntity;

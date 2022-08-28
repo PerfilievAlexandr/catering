@@ -1,6 +1,6 @@
 package com.catering.app.servise;
 
-import com.catering.app.domain.models.customer.Customer;
+import com.catering.app.domain.models.Customer;
 import com.catering.app.exception.ServiceException;
 
 import java.util.List;
