@@ -11,4 +11,6 @@ public interface CustomerService {
     Customer getCustomerById(Integer customerId) throws ServiceException;
 
     void deleteCustomerById(Integer customerId) throws ServiceException;
+
+    Customer createCustomer(Customer customer);
 }

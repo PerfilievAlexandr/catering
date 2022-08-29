@@ -34,4 +34,10 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
 
         deleteById(customerId);
     }
+
+    default Customer createCustomer(Customer customer) {
+        CustomerEntity customerEntity = save(CustomerMapper.mapToCreateCustomerEntity(customer));
+
+        return CustomerMapper.mapToCustomerDomain(customerEntity);
+    }
 }

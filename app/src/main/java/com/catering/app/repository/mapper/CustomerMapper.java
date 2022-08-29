@@ -41,4 +41,15 @@ public class CustomerMapper {
                 orderEntity.getComment()
         );
     }
+
+    public static CustomerEntity mapToCreateCustomerEntity(Customer customer) {
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setFirstName(customer.getFirstName());
+        customerEntity.setLastName(customer.getLastName());
+        customerEntity.setPhone(customer.getPhone());
+        customerEntity.setEmail(customer.getEmail());
+        customerEntity.setCompanyName(customer.getCompanyName());
+
+        return customerEntity;
+    }
 }

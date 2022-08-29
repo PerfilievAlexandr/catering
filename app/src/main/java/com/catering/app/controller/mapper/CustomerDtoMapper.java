@@ -1,5 +1,6 @@
 package com.catering.app.controller.mapper;
 
+import com.catering.app.controller.dto.request.CreateCustomerDto;
 import com.catering.app.controller.dto.response.CustomerDto;
 import com.catering.app.domain.models.Customer;
 
@@ -39,5 +40,16 @@ public class CustomerDtoMapper {
                 orderOfCustomer.getAddress(),
                 orderOfCustomer.getComment()
         );
+    }
+
+    public static Customer mapToCreateCustomer(CreateCustomerDto createCustomerDto) {
+        Customer customer = new Customer();
+        customer.setFirstName(createCustomerDto.getFirstName());
+        customer.setLastName(createCustomerDto.getLastName());
+        customer.setPhone(createCustomerDto.getPhone());
+        customer.setEmail(createCustomerDto.getEmail());
+        customer.setCompanyName(createCustomerDto.getCompanyName());
+
+        return customer;
     }
 }

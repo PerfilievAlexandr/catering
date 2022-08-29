@@ -28,4 +28,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomerById(Integer customerId) throws ServiceException {
         customerRepository.deleteCustomerById(customerId);
     }
+
+    @Override
+    public Customer createCustomer(Customer customer) {
+        return customerRepository.createCustomer(customer);
+    }
 }
