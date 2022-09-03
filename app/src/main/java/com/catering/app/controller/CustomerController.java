@@ -1,9 +1,9 @@
 package com.catering.app.controller;
 
-import com.catering.app.controller.dto.request.CreateCustomerDto;
-import com.catering.app.controller.dto.response.CustomerDto;
-import com.catering.app.controller.mapper.CustomerDtoMapper;
-import com.catering.app.domain.models.Customer;
+import com.catering.app.model.api.request.CreateCustomerRequest;
+import com.catering.app.model.api.response.CustomerResponse;
+import com.catering.app.controller.mapper.CustomerApiMapper;
+import com.catering.app.model.domain.Customer;
 import com.catering.app.exception.ServiceException;
 import com.catering.app.servise.CustomerService;
 import io.swagger.annotations.ApiOperation;
@@ -23,33 +23,32 @@ public class CustomerController {
 
     @GetMapping()
     @ApiOperation(value = "Получить список заказчиков")
-    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
-    public List<CustomerDto> getAllCustomers() {
+    @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
+    public List<CustomerResponse> getAllCustomers() {
         return customerService.getAll()
                 .stream()
-                .map(CustomerDtoMapper::mapToCustomerDto)
+                .map(CustomerApiMapper::mapToCustomerOrderResponse)
                 .toList();
     }
 
     @GetMapping("/{customerId}")
     @ApiOperation(value = "Получить заказчика по id")
-    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
-    public CustomerDto getCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
-        return CustomerDtoMapper.mapToCustomerDto(customerService.getCustomerById(customerId));
+    @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
+    public CustomerResponse getCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
+        return CustomerApiMapper.mapToCustomerOrderResponse(customerService.getCustomerById(customerId));
     }
 
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Удалить заказчика по id")
-    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
+    @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
     public void deleteCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
         customerService.deleteCustomerById(customerId);
     }
 
     @PostMapping("/create")
     @ApiOperation(value = "Создать заказчика")
-    @ApiResponse(code = 200, message = "", response = CustomerDto.class)
-    public Customer createCustomer(@Valid @RequestBody CreateCustomerDto customer) {
-        System.out.println();
-        return customerService.createCustomer(CustomerDtoMapper.mapToCreateCustomer(customer));
+    @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
+    public Customer createCustomer(@Valid @RequestBody CreateCustomerRequest customer) {
+        return customerService.createCustomer(CustomerApiMapper.mapToCreateCustomerDto(customer));
     }
 }

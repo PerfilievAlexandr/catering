@@ -1,10 +1,11 @@
 package com.catering.app.repository;
 
-import com.catering.app.domain.models.Customer;
+import com.catering.app.model.domain.Customer;
 import com.catering.app.exception.ServiceException;
 import com.catering.app.exception.errors.ApiErrorType;
-import com.catering.app.repository.entity.CustomerEntity;
-import com.catering.app.repository.mapper.CustomerMapper;
+import com.catering.app.model.dto.CreateCustomerDto;
+import com.catering.app.model.entity.CustomerEntity;
+import com.catering.app.repository.mapper.CustomerEntityMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
     default List<Customer> findAllCustomers() {
         return findAll()
                 .stream()
-                .map(CustomerMapper::mapToCustomerDomain)
+                .map(CustomerEntityMapper::mapToCustomer)
                 .toList();
     }
 
@@ -24,7 +25,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
                 .orElseThrow(() -> new ServiceException(String.format("Заказчик с id = %s не найден", customerId), 404, ApiErrorType.NOT_FOUND ));
 
 
-        return CustomerMapper.mapToCustomerDomain(customerEntity);
+        return CustomerEntityMapper.mapToCustomer(customerEntity);
     }
 
     default void deleteCustomerById(Integer customerId) throws ServiceException {
@@ -35,9 +36,9 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
         deleteById(customerId);
     }
 
-    default Customer createCustomer(Customer customer) {
-        CustomerEntity customerEntity = save(CustomerMapper.mapToCreateCustomerEntity(customer));
+    default Customer createCustomer(CreateCustomerDto createCustomerDto) {
+        CustomerEntity customerEntity = save(CustomerEntityMapper.mapToCreateCustomerEntity(createCustomerDto));
 
-        return CustomerMapper.mapToCustomerDomain(customerEntity);
+        return CustomerEntityMapper.mapToCustomer(customerEntity);
     }
 }

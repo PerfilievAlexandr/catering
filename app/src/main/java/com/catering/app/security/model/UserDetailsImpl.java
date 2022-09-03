@@ -1,7 +1,7 @@
 package com.catering.app.security.model;
 
-import com.catering.app.security.model.enums.EUserStatus;
-import com.catering.app.security.model.entity.User;
+import com.catering.app.model.enums.user.EUserStatus;
+import com.catering.app.model.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -58,16 +58,16 @@ public class UserDetailsImpl implements UserDetails {
         return isEnabled;
     }
 
-    public static UserDetails constructFromUserDbToUserDetails(User user) {
+    public static UserDetails constructFromUserDbToUserDetails(UserEntity userEntity) {
         return new UserDetailsImpl(
-                user.getId(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getStatus().equals(EUserStatus.ACTIVE),
-                user.getStatus().equals(EUserStatus.ACTIVE),
-                user.getStatus().equals(EUserStatus.ACTIVE),
-                user.getStatus().equals(EUserStatus.ACTIVE),
-                user.getRoles().stream().flatMap(role -> role.getName().getSimpleGrantedAuthorities().stream()).collect(Collectors.toSet())
+                userEntity.getId(),
+                userEntity.getEmail(),
+                userEntity.getPassword(),
+                userEntity.getStatus().equals(EUserStatus.ACTIVE),
+                userEntity.getStatus().equals(EUserStatus.ACTIVE),
+                userEntity.getStatus().equals(EUserStatus.ACTIVE),
+                userEntity.getStatus().equals(EUserStatus.ACTIVE),
+                userEntity.getRoleEntities().stream().flatMap(role -> role.getName().getSimpleGrantedAuthorities().stream()).collect(Collectors.toSet())
         );
     }
 }

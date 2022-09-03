@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +19,16 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class AdviceController extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
+        ApiError error = new ApiError();
+        error.setCode(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(ex.getLocalizedMessage());
+        error.setError(ApiErrorType.VALIDATION);
+
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
     public ResponseEntity<ApiError> handleAll(Throwable ex, WebRequest request) {
         if (ex instanceof ServiceException exception) {
             ApiError apiError = new ApiError(
@@ -55,7 +65,6 @@ public class AdviceController extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

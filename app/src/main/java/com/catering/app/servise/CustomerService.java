@@ -1,7 +1,8 @@
 package com.catering.app.servise;
 
-import com.catering.app.domain.models.Customer;
+import com.catering.app.model.domain.Customer;
 import com.catering.app.exception.ServiceException;
+import com.catering.app.model.dto.CreateCustomerDto;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface CustomerService {
 
     void deleteCustomerById(Integer customerId) throws ServiceException;
 
-    Customer createCustomer(Customer customer);
+    Customer createCustomer(CreateCustomerDto createCustomerDto);
 }
