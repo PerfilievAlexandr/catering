@@ -1,8 +1,8 @@
 package com.catering.app.servise.impl;
 
-import com.catering.app.security.model.UserDetailsImpl;
 import com.catering.app.model.entity.UserEntity;
 import com.catering.app.repository.UserRepository;
+import com.catering.app.security.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

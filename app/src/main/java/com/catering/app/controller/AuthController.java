@@ -1,5 +1,6 @@
 package com.catering.app.controller;
 
+import com.catering.app.exception.ServiceException;
 import com.catering.app.model.api.response.UserResponse;
 import com.catering.app.controller.mapper.AuthApiMapper;
 import com.catering.app.model.domain.User;
@@ -39,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody SigninRequest signinRequest) {
+    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody SigninRequest signinRequest) throws ServiceException {
         AuthResponse authResponse = userService.loginUser(AuthApiMapper.mapToSigninDto(signinRequest));
 
         return ResponseEntity.ok(AuthApiMapper.mapToAuthResponse(authResponse));

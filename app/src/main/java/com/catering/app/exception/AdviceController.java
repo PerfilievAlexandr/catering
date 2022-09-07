@@ -29,6 +29,16 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    protected ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        ApiError error = new ApiError();
+        error.setCode(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getLocalizedMessage());
+        error.setError(ApiErrorType.NOT_FOUND);
+
+        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+    }
+
     public ResponseEntity<ApiError> handleAll(Throwable ex, WebRequest request) {
         if (ex instanceof ServiceException exception) {
             ApiError apiError = new ApiError(

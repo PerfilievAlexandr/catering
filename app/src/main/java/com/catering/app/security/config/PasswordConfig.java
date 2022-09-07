@@ -1,4 +1,4 @@
-package com.catering.app.config.security;
+package com.catering.app.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

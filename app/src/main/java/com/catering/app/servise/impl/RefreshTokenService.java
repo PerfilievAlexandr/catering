@@ -1,7 +1,10 @@
 package com.catering.app.servise.impl;
 
+import com.catering.app.exception.ServiceException;
+import com.catering.app.exception.errors.ApiErrorType;
 import com.catering.app.model.entity.RefreshTokenEntity;
 import com.catering.app.exception.RefreshTokenException;
+import com.catering.app.model.entity.UserEntity;
 import com.catering.app.security.config.JwtConfig;
 import com.catering.app.security.JwtUtils;
 import com.catering.app.security.model.UserDetailsImpl;
@@ -37,21 +40,22 @@ public class RefreshTokenService {
                 .orElseThrow(() -> new RefreshTokenException(token, "Refresh token is not in database!"));
     }
 
-    public RefreshTokenEntity createRefreshToken(Integer userId) {
+    public RefreshTokenEntity createRefreshToken(Integer userId) throws ServiceException {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new ServiceException(String.format("Пользователь с id = %s не найден", userId), 404, ApiErrorType.NOT_FOUND ));
         RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity();
-        refreshTokenEntity.setUserEntity(userRepository.findById(userId).get());
+
+        refreshTokenEntity.setUserEntity(userEntity);
         refreshTokenEntity.setExpiryDate(Instant.now().plusMillis(jwtConfig.getJwtRefreshExpirationMs()));
         refreshTokenEntity.setToken(UUID.randomUUID().toString());
         refreshTokenEntity = refreshTokenRepository.save(refreshTokenEntity);
         return refreshTokenEntity;
     }
 
-    public RefreshTokenEntity verifyExpiration(RefreshTokenEntity token) throws RefreshTokenException {
+    public void verifyExpiration(RefreshTokenEntity token) throws RefreshTokenException {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new RefreshTokenException(token.getToken(), "Refresh token was expired. Please make a new signin request");
         }
-
-        return token;
     }
 }

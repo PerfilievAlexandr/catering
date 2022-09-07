@@ -1,8 +1,7 @@
 package com.catering.app.repository;
 
+import com.catering.app.exception.ResourceNotFoundException;
 import com.catering.app.model.domain.Customer;
-import com.catering.app.exception.ServiceException;
-import com.catering.app.exception.errors.ApiErrorType;
 import com.catering.app.model.dto.CreateCustomerDto;
 import com.catering.app.model.entity.CustomerEntity;
 import com.catering.app.repository.mapper.CustomerEntityMapper;
@@ -20,17 +19,17 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
                 .toList();
     }
 
-    default Customer findCustomerById(Integer customerId) throws ServiceException {
+    default Customer findCustomerById(Integer customerId) {
         CustomerEntity customerEntity = findById(customerId)
-                .orElseThrow(() -> new ServiceException(String.format("Заказчик с id = %s не найден", customerId), 404, ApiErrorType.NOT_FOUND ));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Заказчик с id = %s не найден", customerId)));
 
 
         return CustomerEntityMapper.mapToCustomer(customerEntity);
     }
 
-    default void deleteCustomerById(Integer customerId) throws ServiceException {
+    default void deleteCustomerById(Integer customerId) {
         if (!existsById(customerId)) {
-            throw new ServiceException(String.format("Заказчик с id = %s не найден", customerId), 404, ApiErrorType.NOT_FOUND );
+            throw new ResourceNotFoundException(String.format("Заказчик с id = %s не найден", customerId) );
         }
 
         deleteById(customerId);

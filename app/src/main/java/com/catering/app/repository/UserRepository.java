@@ -1,5 +1,6 @@
 package com.catering.app.repository;
 
+import com.catering.app.exception.ResourceNotFoundException;
 import com.catering.app.model.domain.User;
 import com.catering.app.model.entity.UserEntity;
 import com.catering.app.repository.mapper.UserEntityMapper;
@@ -21,5 +22,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     default User registerUser(UserEntity userEntity) {
         return UserEntityMapper.mapToUser(save(userEntity));
+    }
+
+    default User findUserById(Integer userId) {
+        UserEntity userEntity = findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("No user with id = %s", userId)));
+
+
+        return UserEntityMapper.mapToUser(userEntity);
     }
 }

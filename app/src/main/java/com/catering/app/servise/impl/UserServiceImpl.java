@@ -1,5 +1,7 @@
 package com.catering.app.servise.impl;
 
+import com.catering.app.exception.ResourceNotFoundException;
+import com.catering.app.exception.ServiceException;
 import com.catering.app.repository.mapper.UserEntityMapper;
 import com.catering.app.model.dto.SigninDto;
 import com.catering.app.model.domain.User;
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public AuthResponse loginUser(SigninDto signinDto) {
+    public AuthResponse loginUser(SigninDto signinDto) throws ServiceException {
         Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(
                 signinDto.getUsername(),
                 signinDto.getPassword()
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
         Set<RoleEntity> roleEntities = signupDto.getRoles()
                 .stream()
                 .map(role -> roleRepository.findRoleByName(role)
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found.")))
+                        .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found.")))
                 .collect(Collectors.toSet());
 
         return userRepository.registerUser(UserEntityMapper.mapToUserEntityFromSignupDto(signupDto, roleEntities, passwordEncoder));
