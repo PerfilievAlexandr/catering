@@ -13,7 +13,6 @@ import com.catering.app.model.api.response.AuthResponse;
 import com.catering.app.servise.UserService;
 import com.catering.app.servise.impl.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,35 +29,35 @@ public class AuthController {
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority(T(com.catering.app.model.enums.user.ESecurityUserPermissions).ADMIN_READ.getPermission())")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         List<UserResponse> users = userService.getAllUsers()
                 .stream()
                 .map(AuthApiMapper::mapToUserResponse)
                 .toList();
 
-        return ResponseEntity.ok(users);
+        return users;
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody SigninRequest signinRequest) throws ServiceException {
+    public AuthResponse loginUser(@Valid @RequestBody SigninRequest signinRequest) throws ServiceException {
         AuthResponse authResponse = userService.loginUser(AuthApiMapper.mapToSigninDto(signinRequest));
 
-        return ResponseEntity.ok(AuthApiMapper.mapToAuthResponse(authResponse));
+        return AuthApiMapper.mapToAuthResponse(authResponse);
     }
 
     @PostMapping("/signup")
     @PreAuthorize("hasAuthority(T(com.catering.app.model.enums.user.ESecurityUserPermissions).ADMIN_WRITE.getPermission())")
-    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
+    public UserResponse registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         User user = userService.registerUser(AuthApiMapper.mapToSignupDto(signupRequest));
 
-        return ResponseEntity.ok(AuthApiMapper.mapToUserResponse(user));
+        return AuthApiMapper.mapToUserResponse(user);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) throws RefreshTokenException {
+    public RefreshTokenResponse refreshToken(@Valid @RequestBody RefreshTokenRequest request) throws RefreshTokenException {
         String refreshedToken = refreshTokenService.getRefreshedToken(request.getRefreshToken());
 
-        return ResponseEntity.ok(new RefreshTokenResponse(refreshedToken, request.getRefreshToken()));
+        return new RefreshTokenResponse(refreshedToken, request.getRefreshToken());
     }
 
     @DeleteMapping("/{userId}")

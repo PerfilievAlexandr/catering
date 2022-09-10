@@ -1,4 +1,4 @@
-package com.catering.app.repository.mapper;
+package com.catering.app.servise.mapper;
 
 import com.catering.app.model.domain.Customer;
 import com.catering.app.model.dto.CreateCustomerDto;

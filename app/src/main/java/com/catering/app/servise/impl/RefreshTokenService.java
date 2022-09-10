@@ -35,6 +35,13 @@ public class RefreshTokenService {
         return jwtUtils.generateTokenFromUserDetails(userDetails);
     }
 
+    private void verifyExpiration(RefreshTokenEntity token) throws RefreshTokenException {
+        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+            refreshTokenRepository.delete(token);
+            throw new RefreshTokenException(token.getToken(), "Refresh token was expired. Please make a new signin request");
+        }
+    }
+
     public RefreshTokenEntity findByToken(String token) throws RefreshTokenException {
         return refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new RefreshTokenException(token, "Refresh token is not in database!"));
@@ -50,12 +57,5 @@ public class RefreshTokenService {
         refreshTokenEntity.setToken(UUID.randomUUID().toString());
         refreshTokenEntity = refreshTokenRepository.save(refreshTokenEntity);
         return refreshTokenEntity;
-    }
-
-    public void verifyExpiration(RefreshTokenEntity token) throws RefreshTokenException {
-        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-            refreshTokenRepository.delete(token);
-            throw new RefreshTokenException(token.getToken(), "Refresh token was expired. Please make a new signin request");
-        }
     }
 }

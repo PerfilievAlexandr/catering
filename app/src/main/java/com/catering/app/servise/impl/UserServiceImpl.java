@@ -2,7 +2,8 @@ package com.catering.app.servise.impl;
 
 import com.catering.app.exception.ResourceNotFoundException;
 import com.catering.app.exception.ServiceException;
-import com.catering.app.repository.mapper.UserEntityMapper;
+import com.catering.app.model.entity.UserEntity;
+import com.catering.app.servise.mapper.UserEntityMapper;
 import com.catering.app.model.dto.SigninDto;
 import com.catering.app.model.domain.User;
 import com.catering.app.security.JwtUtils;
@@ -78,11 +79,16 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found.")))
                 .collect(Collectors.toSet());
 
-        return userRepository.registerUser(UserEntityMapper.mapToUserEntityFromSignupDto(signupDto, roleEntities, passwordEncoder));
+        UserEntity userEntity = userRepository.save(UserEntityMapper.mapToUserEntityFromSignupDto(signupDto, roleEntities, passwordEncoder));
+
+        return UserEntityMapper.mapToUser(userEntity);
     }
 
     public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+        return userRepository.findAll()
+                .stream()
+                .map(UserEntityMapper::mapToUser)
+                .toList();
     }
 
     public void deleteUserById(Integer id) {
