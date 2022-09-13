@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(Integer customerId) {
         CustomerEntity customerEntity = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Заказчик с id = %s не найден", customerId)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Customer with id = %s not found", customerId)));
 
 
         return CustomerEntityMapper.mapToCustomer(customerEntity);
@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomerById(Integer customerId) {
         if (!customerRepository.existsById(customerId)) {
-            throw new ResourceNotFoundException(String.format("Заказчик с id = %s не найден", customerId) );
+            throw new ResourceNotFoundException(String.format("Customer with id = %s not found", customerId) );
         }
 
         customerRepository.deleteById(customerId);

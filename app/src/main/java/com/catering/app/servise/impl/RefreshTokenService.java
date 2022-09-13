@@ -1,5 +1,6 @@
 package com.catering.app.servise.impl;
 
+import com.catering.app.exception.ResourceNotFoundException;
 import com.catering.app.exception.ServiceException;
 import com.catering.app.exception.errors.ApiErrorType;
 import com.catering.app.model.entity.RefreshTokenEntity;
@@ -47,9 +48,9 @@ public class RefreshTokenService {
                 .orElseThrow(() -> new RefreshTokenException(token, "Refresh token is not in database!"));
     }
 
-    public RefreshTokenEntity createRefreshToken(Integer userId) throws ServiceException {
+    public RefreshTokenEntity createRefreshToken(Integer userId) {
         UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new ServiceException(String.format("Пользователь с id = %s не найден", userId), 404, ApiErrorType.NOT_FOUND ));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id = %s not found", userId)));
         RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity();
 
         refreshTokenEntity.setUserEntity(userEntity);

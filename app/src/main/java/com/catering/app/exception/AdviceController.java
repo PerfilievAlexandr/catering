@@ -19,6 +19,18 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class AdviceController extends ResponseEntityExceptionHandler {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        List<BaseMessage> baseMessages = ex.getBindingResult().getAllErrors()
+                .stream()
+                .map(error -> new BaseMessage(ApiErrorType.VALIDATION, error.getDefaultMessage()))
+                .collect(Collectors.toList());
+
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), ApiErrorType.VALIDATION, baseMessages);
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
         ApiError error = new ApiError();
@@ -26,7 +38,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         error.setMessage(ex.getLocalizedMessage());
         error.setError(ApiErrorType.VALIDATION);
 
-        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -36,9 +48,10 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         error.setMessage(ex.getLocalizedMessage());
         error.setError(ApiErrorType.NOT_FOUND);
 
-        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleAll(Throwable ex, WebRequest request) {
         if (ex instanceof ServiceException exception) {
             ApiError apiError = new ApiError(
@@ -63,7 +76,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
                     List.of(new BaseMessage(ApiErrorType.INTERNAL, ex.getCause().getMessage()))
             );
 
-            return new ResponseEntity(apiError, HttpStatus.valueOf(apiError.getCode()));
+            return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getCode()));
         }
 
         ApiError apiError = new ApiError(
@@ -73,18 +86,6 @@ public class AdviceController extends ResponseEntityExceptionHandler {
                 List.of(new BaseMessage(ApiErrorType.INTERNAL, ex.getCause().getMessage()))
         );
 
-        return new ResponseEntity(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        List<BaseMessage> baseMessages = ex.getBindingResult().getAllErrors()
-                .stream()
-                .map(error -> new BaseMessage(ApiErrorType.VALIDATION, error.getDefaultMessage()))
-                .collect(Collectors.toList());
-
-        ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), ApiErrorType.VALIDATION, baseMessages);
-
-        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

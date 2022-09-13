@@ -1,6 +1,5 @@
 package com.catering.app.servise;
 
-import com.catering.app.exception.ServiceException;
 import com.catering.app.model.api.response.AuthResponse;
 import com.catering.app.model.dto.SigninDto;
 import com.catering.app.model.domain.User;
@@ -12,5 +11,5 @@ public interface UserService {
     void deleteUserById(Integer id);
     List<User> getAllUsers();
     User registerUser(SignupDto signupDto);
-    AuthResponse loginUser(SigninDto signinDtoDto) throws ServiceException;
+    AuthResponse loginUser(SigninDto signinDtoDto);
 }

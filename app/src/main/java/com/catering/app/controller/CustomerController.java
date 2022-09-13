@@ -34,14 +34,14 @@ public class CustomerController {
     @GetMapping("/{customerId}")
     @ApiOperation(value = "Получить заказчика по id")
     @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
-    public CustomerResponse getCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
+    public CustomerResponse getCustomerById(@PathVariable @NotNull Integer customerId) {
         return CustomerApiMapper.mapToCustomerOrderResponse(customerService.getCustomerById(customerId));
     }
 
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Удалить заказчика по id")
     @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
-    public void deleteCustomerById(@PathVariable @NotNull Integer customerId) throws ServiceException {
+    public void deleteCustomerById(@PathVariable @NotNull Integer customerId) {
         customerService.deleteCustomerById(customerId);
     }
 

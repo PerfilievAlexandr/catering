@@ -30,16 +30,14 @@ public class AuthController {
     @GetMapping("/users")
     @PreAuthorize("hasAuthority(T(com.catering.app.model.enums.user.ESecurityUserPermissions).ADMIN_READ.getPermission())")
     public List<UserResponse> getAllUsers() {
-        List<UserResponse> users = userService.getAllUsers()
+        return userService.getAllUsers()
                 .stream()
                 .map(AuthApiMapper::mapToUserResponse)
                 .toList();
-
-        return users;
     }
 
     @PostMapping("/signin")
-    public AuthResponse loginUser(@Valid @RequestBody SigninRequest signinRequest) throws ServiceException {
+    public AuthResponse loginUser(@Valid @RequestBody SigninRequest signinRequest) {
         AuthResponse authResponse = userService.loginUser(AuthApiMapper.mapToSigninDto(signinRequest));
 
         return AuthApiMapper.mapToAuthResponse(authResponse);
@@ -54,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public RefreshTokenResponse refreshToken(@Valid @RequestBody RefreshTokenRequest request) throws RefreshTokenException {
+    public RefreshTokenResponse refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
         String refreshedToken = refreshTokenService.getRefreshedToken(request.getRefreshToken());
 
         return new RefreshTokenResponse(refreshedToken, request.getRefreshToken());

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
     private Integer code;
     private ApiErrorType error;
     private List<InternalDetailSimpleException> details;

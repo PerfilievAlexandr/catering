@@ -2,6 +2,7 @@ package com.catering.app.servise.impl;
 
 import com.catering.app.exception.ResourceNotFoundException;
 import com.catering.app.exception.ServiceException;
+import com.catering.app.exception.errors.ApiErrorType;
 import com.catering.app.model.entity.UserEntity;
 import com.catering.app.servise.mapper.UserEntityMapper;
 import com.catering.app.model.dto.SigninDto;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public AuthResponse loginUser(SigninDto signinDto) throws ServiceException {
+    public AuthResponse loginUser(SigninDto signinDto) {
         Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(
                 signinDto.getUsername(),
                 signinDto.getPassword()
@@ -70,13 +71,13 @@ public class UserServiceImpl implements UserService {
 
     public User registerUser(SignupDto signupDto) {
         if (userRepository.existsUserByEmail(signupDto.getEmail())) {
-            throw new RuntimeException("Error: Email is already in use!");
+            throw new ServiceException(String.format("Email %s is already in use", signupDto.getEmail()), 400, ApiErrorType.BAD_REQUEST );
         }
 
         Set<RoleEntity> roleEntities = signupDto.getRoles()
                 .stream()
                 .map(role -> roleRepository.findRoleByName(role)
-                        .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found.")))
+                        .orElseThrow(() -> new ResourceNotFoundException("Role is not found.")))
                 .collect(Collectors.toSet());
 
         UserEntity userEntity = userRepository.save(UserEntityMapper.mapToUserEntityFromSignupDto(signupDto, roleEntities, passwordEncoder));
