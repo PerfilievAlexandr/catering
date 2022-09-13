@@ -1,8 +1,7 @@
 package com.catering.app.controller;
 
 import com.catering.app.controller.mapper.OrderApiMapper;
-import com.catering.app.model.api.request.CreateOrderRequest;
-import com.catering.app.model.api.request.UpdateOrderRequest;
+import com.catering.app.model.api.request.CreateUpdateOrderRequest;
 import com.catering.app.model.api.response.OrderResponse;
 import com.catering.app.model.domain.Order;
 import com.catering.app.servise.OrderService;
@@ -48,14 +47,14 @@ public class OrderController {
     @PostMapping("/create")
     @ApiOperation(value = "Создать заказ")
     @ApiResponse(code = 200, message = "", response = OrderResponse.class)
-    public Order createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
+    public Order createOrder(@Valid @RequestBody CreateUpdateOrderRequest orderRequest) {
         return orderService.createOrder(OrderApiMapper.mapToCreateOrderDto(orderRequest));
     }
 
     @PutMapping("/{orderId}/update")
     @ApiOperation(value = "Обновить заказ")
     @ApiResponse(code = 200, message = "", response = OrderResponse.class)
-    public Order updateOrder(@PathVariable @NotNull Integer orderId, @Valid @RequestBody UpdateOrderRequest orderRequest) {
+    public Order updateOrder(@PathVariable @NotNull Integer orderId, @Valid @RequestBody CreateUpdateOrderRequest orderRequest) {
         return orderService.updateOrder(OrderApiMapper.mapToUpdateOrderDto(orderRequest, orderId));
     }
 }

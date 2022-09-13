@@ -51,39 +51,6 @@ public class OrderEntityMapper {
     }
 
     public static OrderEntity mapToUpdateOrderEntity(UpdateOrderDto updateOrderDto, CustomerEntity customerEntity) {
-//        OrderEntity orderEntity = new OrderEntity();
-//
-//        orderEntity.setId(updateOrderDto.getId());
-//
-//        if (updateOrderDto.getStatus() != null) {
-//            orderEntity.setStatus(updateOrderDto.getStatus());
-//        }
-//
-//        if (updateOrderDto.getEventDate() != null) {
-//            orderEntity.setEventDate(updateOrderDto.getEventDate());
-//        }
-//
-//        if (updateOrderDto.getEventReason() != null) {
-//            orderEntity.setEventReason(updateOrderDto.getEventReason());
-//        }
-//
-//        if (updateOrderDto.getPersonsQuantity() != null) {
-//            orderEntity.setPersonsQuantity(updateOrderDto.getPersonsQuantity());
-//        }
-//
-//        if (updateOrderDto.getEventType() != null) {
-//            orderEntity.setEventType(updateOrderDto.getEventType());
-//        }
-//
-//        if (updateOrderDto.getAddress() != null) {
-//            orderEntity.setAddress(updateOrderDto.getAddress());
-//        }
-//
-//        if (updateOrderDto.getAddress() != null) {
-//            orderEntity.setComment(updateOrderDto.getComment());
-//        }
-//
-//        return orderEntity;
         OrderEntity orderEntity = new OrderEntity();
 
         orderEntity.setId(updateOrderDto.getId());

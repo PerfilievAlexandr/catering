@@ -1,7 +1,6 @@
 package com.catering.app.controller.mapper;
 
-import com.catering.app.model.api.request.CreateOrderRequest;
-import com.catering.app.model.api.request.UpdateOrderRequest;
+import com.catering.app.model.api.request.CreateUpdateOrderRequest;
 import com.catering.app.model.api.response.OrderResponse;
 import com.catering.app.model.domain.Order;
 import com.catering.app.model.dto.CreateOrderDto;
@@ -36,20 +35,20 @@ public class OrderApiMapper {
         );
     }
 
-    public static CreateOrderDto mapToCreateOrderDto(CreateOrderRequest createOrderRequest) {
+    public static CreateOrderDto mapToCreateOrderDto(CreateUpdateOrderRequest createUpdateOrderRequest) {
         return new CreateOrderDto(
-                createOrderRequest.getStatus(),
-                createOrderRequest.getEventDate(),
-                createOrderRequest.getEventReason(),
-                createOrderRequest.getPersonsQuantity(),
-                createOrderRequest.getEventType(),
-                createOrderRequest.getAddress(),
-                createOrderRequest.getComment(),
-                createOrderRequest.getCustomerId()
+                createUpdateOrderRequest.getStatus(),
+                createUpdateOrderRequest.getEventDate(),
+                createUpdateOrderRequest.getEventReason(),
+                createUpdateOrderRequest.getPersonsQuantity(),
+                createUpdateOrderRequest.getEventType(),
+                createUpdateOrderRequest.getAddress(),
+                createUpdateOrderRequest.getComment(),
+                createUpdateOrderRequest.getCustomerId()
         );
     }
 
-    public static UpdateOrderDto mapToUpdateOrderDto(UpdateOrderRequest updateOrderRequest, int orderId) {
+    public static UpdateOrderDto mapToUpdateOrderDto(CreateUpdateOrderRequest updateOrderRequest, int orderId) {
         return new UpdateOrderDto(
                 orderId,
                 updateOrderRequest.getStatus(),

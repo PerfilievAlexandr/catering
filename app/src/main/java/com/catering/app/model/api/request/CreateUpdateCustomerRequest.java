@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateCustomerRequest {
+public class CreateUpdateCustomerRequest {
     @NotBlank(message = "FirstName is required")
     private String firstName;
 

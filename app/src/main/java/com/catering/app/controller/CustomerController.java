@@ -1,10 +1,9 @@
 package com.catering.app.controller;
 
-import com.catering.app.model.api.request.CreateCustomerRequest;
+import com.catering.app.model.api.request.CreateUpdateCustomerRequest;
 import com.catering.app.model.api.response.CustomerResponse;
 import com.catering.app.controller.mapper.CustomerApiMapper;
 import com.catering.app.model.domain.Customer;
-import com.catering.app.exception.ServiceException;
 import com.catering.app.servise.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -48,7 +47,14 @@ public class CustomerController {
     @PostMapping("/create")
     @ApiOperation(value = "Создать заказчика")
     @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
-    public Customer createCustomer(@Valid @RequestBody CreateCustomerRequest customer) {
+    public Customer createCustomer(@Valid @RequestBody CreateUpdateCustomerRequest customer) {
         return customerService.createCustomer(CustomerApiMapper.mapToCreateCustomerDto(customer));
+    }
+
+    @PutMapping("/{customerId}/update")
+    @ApiOperation(value = "Обновить заказчика")
+    @ApiResponse(code = 200, message = "", response = CustomerResponse.class)
+    public Customer updateCustomer(@PathVariable @NotNull Integer customerId, @Valid @RequestBody CreateUpdateCustomerRequest customerRequest) {
+        return customerService.updateCustomer(CustomerApiMapper.mapToUpdateCustomerDto(customerRequest, customerId));
     }
 }

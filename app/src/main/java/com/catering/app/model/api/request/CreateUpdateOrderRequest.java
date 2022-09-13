@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderRequest {
+public class CreateUpdateOrderRequest {
     @NotNull(message = "Status is required")
     private OrderStatus status;
     @NotBlank(message = "EventDate is required")

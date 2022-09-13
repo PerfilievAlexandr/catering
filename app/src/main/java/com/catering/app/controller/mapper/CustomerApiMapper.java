@@ -1,9 +1,10 @@
 package com.catering.app.controller.mapper;
 
-import com.catering.app.model.api.request.CreateCustomerRequest;
+import com.catering.app.model.api.request.CreateUpdateCustomerRequest;
 import com.catering.app.model.api.response.CustomerResponse;
 import com.catering.app.model.domain.Customer;
 import com.catering.app.model.dto.CreateCustomerDto;
+import com.catering.app.model.dto.UpdateCustomerDto;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,13 +44,24 @@ public class CustomerApiMapper {
         );
     }
 
-    public static CreateCustomerDto mapToCreateCustomerDto(CreateCustomerRequest createCustomerRequest) {
+    public static CreateCustomerDto mapToCreateCustomerDto(CreateUpdateCustomerRequest createUpdateCustomerRequest) {
         return new CreateCustomerDto(
-                createCustomerRequest.getFirstName(),
-                createCustomerRequest.getLastName(),
-                createCustomerRequest.getPhone(),
-                createCustomerRequest.getEmail(),
-                createCustomerRequest.getCompanyName()
+                createUpdateCustomerRequest.getFirstName(),
+                createUpdateCustomerRequest.getLastName(),
+                createUpdateCustomerRequest.getPhone(),
+                createUpdateCustomerRequest.getEmail(),
+                createUpdateCustomerRequest.getCompanyName()
+        );
+    }
+
+    public static UpdateCustomerDto mapToUpdateCustomerDto(CreateUpdateCustomerRequest createUpdateCustomerRequest, Integer customerId) {
+        return new UpdateCustomerDto(
+                customerId,
+                createUpdateCustomerRequest.getFirstName(),
+                createUpdateCustomerRequest.getLastName(),
+                createUpdateCustomerRequest.getPhone(),
+                createUpdateCustomerRequest.getEmail(),
+                createUpdateCustomerRequest.getCompanyName()
         );
     }
 }
