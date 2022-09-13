@@ -98,7 +98,7 @@ VALUES (
 CREATE TABLE orders
 (
     id SERIAL PRIMARY KEY,
-    number VARCHAR(255) NOT NULL,
+    number SERIAL,
     status VARCHAR(255) NOT NULL,
     event_date VARCHAR(10) NOT NULL,
     event_reason VARCHAR(255) NOT NULL,
@@ -111,7 +111,6 @@ CREATE TABLE orders
 );
 
 INSERT INTO orders (
-    number,
     status,
     event_date,
     event_reason,
@@ -122,7 +121,6 @@ INSERT INTO orders (
     customer_id
 )
 VALUES (
-           '1',
            'DRAFT',
             '08.08.2021',
            'COMPANY_PARTY',

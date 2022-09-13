@@ -1,4 +1,4 @@
-package com.catering.app.model.domain;
+package com.catering.app.model.dto;
 
 import com.catering.app.model.enums.EventReason;
 import com.catering.app.model.enums.EventType;
@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class UpdateOrderDto {
     private int id;
-    private int number;
     private OrderStatus status;
     private String eventDate;
     private EventReason eventReason;
@@ -20,17 +19,5 @@ public class Order {
     private EventType eventType;
     private String address;
     private String comment;
-    private Order.Customer customer;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Customer {
-        private int id;
-        private String firstName;
-        private String lastName;
-        private String phone;
-        private String email;
-        private String companyName;
-    }
+    private Integer customerId;
 }

@@ -1,6 +1,8 @@
 package com.catering.app.servise.mapper;
 
 import com.catering.app.model.domain.Order;
+import com.catering.app.model.dto.CreateOrderDto;
+import com.catering.app.model.dto.UpdateOrderDto;
 import com.catering.app.model.entity.CustomerEntity;
 import com.catering.app.model.entity.OrderEntity;
 
@@ -31,5 +33,69 @@ public class OrderEntityMapper {
                 customerEntity.getEmail(),
                 customerEntity.getCompanyName()
         );
+    }
+
+    public static OrderEntity mapToOrderEntity(CreateOrderDto createOrderDto, CustomerEntity customerEntity) {
+        OrderEntity orderEntity = new OrderEntity();
+
+        orderEntity.setStatus(createOrderDto.getStatus());
+        orderEntity.setEventDate(createOrderDto.getEventDate());
+        orderEntity.setEventReason(createOrderDto.getEventReason());
+        orderEntity.setPersonsQuantity(createOrderDto.getPersonsQuantity());
+        orderEntity.setEventType(createOrderDto.getEventType());
+        orderEntity.setAddress(createOrderDto.getAddress());
+        orderEntity.setComment(createOrderDto.getComment());
+        orderEntity.setCustomer(customerEntity);
+
+        return orderEntity;
+    }
+
+    public static OrderEntity mapToUpdateOrderEntity(UpdateOrderDto updateOrderDto, CustomerEntity customerEntity) {
+//        OrderEntity orderEntity = new OrderEntity();
+//
+//        orderEntity.setId(updateOrderDto.getId());
+//
+//        if (updateOrderDto.getStatus() != null) {
+//            orderEntity.setStatus(updateOrderDto.getStatus());
+//        }
+//
+//        if (updateOrderDto.getEventDate() != null) {
+//            orderEntity.setEventDate(updateOrderDto.getEventDate());
+//        }
+//
+//        if (updateOrderDto.getEventReason() != null) {
+//            orderEntity.setEventReason(updateOrderDto.getEventReason());
+//        }
+//
+//        if (updateOrderDto.getPersonsQuantity() != null) {
+//            orderEntity.setPersonsQuantity(updateOrderDto.getPersonsQuantity());
+//        }
+//
+//        if (updateOrderDto.getEventType() != null) {
+//            orderEntity.setEventType(updateOrderDto.getEventType());
+//        }
+//
+//        if (updateOrderDto.getAddress() != null) {
+//            orderEntity.setAddress(updateOrderDto.getAddress());
+//        }
+//
+//        if (updateOrderDto.getAddress() != null) {
+//            orderEntity.setComment(updateOrderDto.getComment());
+//        }
+//
+//        return orderEntity;
+        OrderEntity orderEntity = new OrderEntity();
+
+        orderEntity.setId(updateOrderDto.getId());
+        orderEntity.setStatus(updateOrderDto.getStatus());
+        orderEntity.setEventDate(updateOrderDto.getEventDate());
+        orderEntity.setEventReason(updateOrderDto.getEventReason());
+        orderEntity.setPersonsQuantity(updateOrderDto.getPersonsQuantity());
+        orderEntity.setEventType(updateOrderDto.getEventType());
+        orderEntity.setAddress(updateOrderDto.getAddress());
+        orderEntity.setComment(updateOrderDto.getComment());
+        orderEntity.setCustomer(customerEntity);
+
+        return orderEntity;
     }
 }

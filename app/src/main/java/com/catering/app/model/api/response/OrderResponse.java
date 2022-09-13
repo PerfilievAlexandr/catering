@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderResponse {
     private int id;
-    private String number;
+    private int number;
     private OrderStatus status;
     private String eventDate;
     private EventReason eventReason;

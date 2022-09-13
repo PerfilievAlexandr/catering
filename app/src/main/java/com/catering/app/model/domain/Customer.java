@@ -26,7 +26,7 @@ public class Customer {
     @AllArgsConstructor
     public static class Order {
         private int id;
-        private String number;
+        private int number;
         private OrderStatus status;
         private String eventDate;
         private EventReason eventReason;

@@ -19,7 +19,8 @@ public class OrderEntity {
     private int id;
 
     @Column(name = "number")
-    private String number;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int number;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
